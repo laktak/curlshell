@@ -1,0 +1,80 @@
+
+### curlshell config file
+# this file is in hjson format -- see http://hjson.org
+
+### global settings
+# the port to listen on (you can override this with -port=NUM from the CLI)
+port: 8080
+
+# show stdout from requests on the console
+debug: true
+
+# curl gives exit code 0 even for failed (5xx) requests unless you use -f (which will hide all output)
+# set curlfail to generate a protocol error so you get an exit code > 0 for errors
+curlfail: true
+
+# optional digest authentication
+# use with curl --digest -uUSER:PASS
+# e.g. curl --digest -uhugo:vroom localhost:8080/hello
+/*
+digest: {
+  hugo: vroom
+  foo: bar
+}
+*/
+
+commands: {
+
+  # each item defines a service listening at /NAME
+
+  # cmd: command
+  #   the (bash) command you with to execute
+  #   $ARG will contain the subpath (if any)
+  #   $ARG_* will be set for each supplied argument (uppercase)
+
+  # cwd: path
+  #   current working directory (relative to this config)
+
+  # stream: true|false
+  #   true:  send the output immedeately (for long running tasks
+  #          and large binary output)
+  #   false: buffers everything until the command exits
+
+  # output: full|append-err|no-err|binary
+  #   full:       return stdout+stderr (mixed)
+  #   append-err: return stdout, append stderr
+  #   no-err:     return stdout, hide stderr
+  #   binary:     return binary, hide stderr
+
+  # encoding: utf-8|binary|etc.
+  #   can usually be omitted
+
+  # contentType: (default "text/plain" or "application/octet-stream" for encoding=="binary")
+  #   can usually be omitted (curl doesn't care)
+
+  hello: {
+    # curl localhost:8080/hello/again?name=human
+
+    cmd: echo hello $ARG $ARG_NAME!
+  }
+
+  ping: {
+    # curl localhost:8080/ping
+
+    cmd: ping 127.0.0.1 -c 10
+    stream: true
+  }
+
+  count: {
+    # curl -T YOURFILE http://localhost:8080/count
+
+    cmd: echo You sent us `wc -c` bytes!
+  }
+
+  getsh: {
+    # curl http://localhost:8080/getsh | tar -t
+
+    cmd: tar -cz -C /bin .
+    output: binary
+  }
+}
