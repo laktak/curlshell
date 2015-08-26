@@ -3,7 +3,7 @@
   "description": "curlshell runs a HTTP server that serves predefined shell commands to curl.",
   "main": "./lib/curlshell.js",
   "author": "Christian Zangl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "curl",
     "shell",
@@ -25,7 +25,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "hjson": "^1.7.3",
+    "hjson": "^1.7.4",
     "http-auth": "^2.2.8"
   }
 }

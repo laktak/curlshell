@@ -25,7 +25,7 @@ digest: {
 
 commands: {
 
-  # each item defines a service listening at /NAME
+  # each item defines a script listening at /NAME
 
   # cmd: command
   #   the (bash) command you with to execute
@@ -53,9 +53,17 @@ commands: {
   #   can usually be omitted (curl doesn't care)
 
   hello: {
-    # curl localhost:8080/hello/again?name=human
+    # curl localhost:8080/hello?name=human
 
-    cmd: echo hello $ARG $ARG_NAME!
+    cmd:
+      '''
+      if [[ $ARG_NAME ]]; then
+        echo "Hello $ARG_NAME!"
+      else
+        echo "What's your name?"
+      fi
+      '''
+      # Use arguments responsibly, watch for command injection!
   }
 
   ping: {
@@ -76,5 +84,6 @@ commands: {
 
     cmd: tar -cz -C /bin .
     output: binary
+    stream: true
   }
 }
