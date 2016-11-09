@@ -1,0 +1,49 @@
+
+port: 8080
+
+# show cmd errors on the console
+debug: true
+
+commands: {
+
+  # each item defines a service listening at /NAME
+
+  help: {
+    cmd:
+    '''
+    echo 'Available commands in this CURLSHELL:
+    /hello/NAME
+    /hello?name=NAME
+    /ping
+    /wc
+      curl --upload-file README.md http://localhost:8080/wc
+    '
+    '''
+
+    # use stream mode for long running commands
+    # stream: false
+    # output: full|append-err|no-err|binary
+  }
+
+  hello: {
+    cmd:
+      '''
+      NAME=${ARG:-$ARG_NAME} # use either /ARG or ?name=NAME
+      echo hello ${NAME:-anonymous}!
+      '''
+  }
+
+  ping: {
+    cmd: ping 127.0.0.1
+    stream: true
+  }
+
+  wc: {
+    cmd: wc -c
+
+    # use stream mode for long running commands
+    stream: true
+    # use verbose to show file upload status
+    verbose: false
+  }
+}
