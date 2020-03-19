@@ -4,11 +4,7 @@
   "main": "./lib/curlshell.js",
   "author": "Christian Zangl",
   "version": "0.2.0",
-  "keywords": [
-    "curl",
-    "shell",
-    "rest"
-  ],
+  "keywords": ["curl", "shell", "rest"],
   "bin": {
     "curlshell": "./bin/curlshell"
   },

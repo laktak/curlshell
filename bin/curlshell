@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 
-var curlshell=require("../lib/curlshell.js");
-var fs=require("fs");
-var path=require("path");
-var Hjson=require("hjson");
+var curlshell = require("../lib/curlshell.js");
+var fs = require("fs");
+var path = require("path");
+var Hjson = require("hjson");
 
-var args={}, argv=[];
-process.argv.slice(2).forEach(function(x) { if (x[0]==="-") { var i=x.indexOf("="); args[x.substr(1, i>0?i-1:undefined)]=i>0?x.substr(i+1):true; } else argv.push(x); });
+var args = {},
+  argv = [];
+process.argv.slice(2).forEach(function(x) {
+  if (x[0] === "-") {
+    var i = x.indexOf("=");
+    args[x.substr(1, i > 0 ? i - 1 : undefined)] = i > 0 ? x.substr(i + 1) : true;
+  } else argv.push(x);
+});
 
 function help() {
   console.error("usage: curlshell [OPTIONS] CONFIG.hjson");
@@ -27,20 +33,20 @@ function help() {
 if (args["-help"] || args["-?"] || args["?"] || args.h) return help();
 
 if (args.init) {
-  var text=fs.readFileSync(path.join(__dirname, "../template.hjson"), "utf8");
+  var text = fs.readFileSync(path.join(__dirname, "../template.hjson"), "utf8");
   console.log(text);
   return 0;
 }
 
-if (argv.length===0) return help();
+if (argv.length === 0) return help();
 
-var base=path.dirname(argv[0]);
-var text=fs.readFileSync(argv[0], "utf8");
-var config=Hjson.parse(text);
+var base = path.dirname(argv[0]);
+var text = fs.readFileSync(argv[0], "utf8");
+var config = Hjson.parse(text);
 
-if (args.port) config.port=parseInt(args.port);
+if (args.port) config.port = parseInt(args.port);
 
-curlshell.status=console.log;
+curlshell.status = console.log;
 curlshell.start(config, base);
 
 process.on("SIGTERM", function() {
